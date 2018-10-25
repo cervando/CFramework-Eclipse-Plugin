@@ -4,9 +4,11 @@ public class AreaTemplate {
 	public static String sourceCode = 
 "package %s;" +
 "\n" +
+"\nimport java.util.HashMap;" +
+"\n" +
 "\nimport config.AreaNames;" +
 "\nimport kmiddle2.nodes.areas.Area;" +
-"\nimport kmiddle2.nodes.activities.ActConf;" + 
+"\nimport kmiddle2.nodes.activities.ActivityConfiguration;" + 
 "\nimport kmiddle2.communications.spikes.SpikeMerger;" + 
 "\nimport kmiddle2.communications.spikes.SpikeRouter;" +
 "\n" +
