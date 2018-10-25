@@ -17,8 +17,9 @@ public class AreaTemplate {
 "\n	public %s(){" +
 "\n		this.ID = AreaNames.%s;" + 
 "\n		this.namer = AreaNames.class;" +
-"\n		" + 
-"\n		AddRoute(new SpikeRouter(" +
+"\n		" +
+"\n		//Copy and paste next block to add a route" + 
+"\n		/*AddRoute(new SpikeRouter(" +
 "\n				new int[]{ AreaNames.X, AreaNames.Y}," + 
 "\n				new int[]{ AreaNames.Z }" +
 "\n				,new SpikeMerger() {" +
@@ -26,7 +27,7 @@ public class AreaTemplate {
 "\n						byte[] elRetorno = null;" + 
 "\n						return elRetorno;" +
 "\n					}" +
-"\n				}));" +
+"\n				}));*/" +
 "\n	}" +
 "\n	" +
 "\n	public void init(){" +
