@@ -1,11 +1,11 @@
-package kmiddlePlugin.view.factories;
+package CPlugin.view.factories;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
-import kmiddlePlugin.model.Graph;
-import kmiddlePlugin.view.ConnectionEditPart;
-import kmiddlePlugin.view.GraphEditPart;
-import kmiddlePlugin.view.AreaEditPart;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
+import CPlugin.model.Graph;
+import CPlugin.view.ConnectionEditPart;
+import CPlugin.view.GraphEditPart;
+import CPlugin.view.AreaEditPart;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;

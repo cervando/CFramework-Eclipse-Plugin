@@ -1,10 +1,10 @@
-package kmiddlePlugin.adapters;
+package CPlugin.adapters;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.propertySources.AreaPropertySource;
+import CPlugin.model.Area;
+import CPlugin.propertySources.AreaPropertySource;
 
 public class AreaAdapterFactory implements IAdapterFactory{
 

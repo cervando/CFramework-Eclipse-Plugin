@@ -1,4 +1,4 @@
-package kmiddlePlugin.contributions;
+package CPlugin.contributions;
 
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.ui.IActionBars;
@@ -6,7 +6,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
 
-import kmiddlePlugin.editors.DiagramEditor;
+import CPlugin.editors.DiagramEditor;
 
 
 /**

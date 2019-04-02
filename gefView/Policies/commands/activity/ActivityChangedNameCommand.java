@@ -1,6 +1,6 @@
-package kmiddlePlugin.gefView.Policies.commands.activity;
+package CPlugin.gefView.Policies.commands.activity;
 
-import kmiddlePlugin.model.Activity;
+import CPlugin.model.Activity;
 
 import org.eclipse.gef.commands.Command;
 
@@ -12,7 +12,7 @@ public class ActivityChangedNameCommand extends Command{
 	
 	
 	
-	public ActivityChangedNameCommand(kmiddlePlugin.model.Activity p, String newName){
+	public ActivityChangedNameCommand(CPlugin.model.Activity p, String newName){
 		process = p;
 		areaName = p.getArea().getName();
 		this.newName = newName;

@@ -1,4 +1,4 @@
-package kmiddlePlugin.parser;
+package CPlugin.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,11 +28,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
-import kmiddlePlugin.model.Graph;
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.utils.Constants;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
+import CPlugin.model.Graph;
+import CPlugin.model.Activity;
+import CPlugin.utils.Constants;
 public class DescriptorManager {
 
 	private IFile descriptorIfile;
@@ -40,7 +40,7 @@ public class DescriptorManager {
 	
 	public DescriptorManager(IProject project){
 		
-    	descriptorIfile = project.getFile("diagram.kua");
+    	descriptorIfile = project.getFile("diagram.cua");
     	if ( descriptorIfile.exists() ){
     		loadProject( descriptorIfile.getLocation().toFile() );
     	}else{
@@ -66,7 +66,7 @@ public class DescriptorManager {
 				
 			}else{
 				doc = builder.newDocument();
-				doc.appendChild(doc.createElement("Kproject"));
+				doc.appendChild(doc.createElement("CModel"));
 				saveDoc();
 			}
 		}catch (Exception e ){
@@ -90,7 +90,7 @@ public class DescriptorManager {
 			Files.write(file, content.getBytes(charset));
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("Error prepairen XML file");
+			System.out.println("Error prepairing XML file");
 		}
 		
 	}
@@ -132,7 +132,7 @@ public class DescriptorManager {
 		
 		Element e = doc.createElement(Constants.TagArea);
 		e.setAttribute(Constants.TagArea_name, areaName);
-		e.appendChild(doc.createElement(Constants.TagArea__outputs));
+		e.appendChild(doc.createElement(Constants.TagArea__inputs));
 		group.appendChild(e);
 		saveDoc();
 		return true;
@@ -148,12 +148,12 @@ public class DescriptorManager {
 	public boolean deleteArea(String areaName){
 		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
 		if ( area != null ){
-			Element outputToMe = null;
+			Element inputToMe = null;
 			
 			//Delete all the connections to this node
-			while ( (outputToMe = searchNode(Constants.TagArea__outputs__output, Constants.TagArea__outputs__output_area, areaName)) != null ){
-				outputToMe.getParentNode().removeChild(outputToMe);
-				outputToMe = null;
+			while ( (inputToMe = searchNode(Constants.TagArea__inputs__input, Constants.TagArea__inputs__input_area, areaName)) != null ){
+				inputToMe.getParentNode().removeChild(inputToMe);
+				inputToMe = null;
 			}
 			
 			area.getParentNode().removeChild(area);
@@ -178,10 +178,10 @@ public class DescriptorManager {
 		System.out.println("Old Name: " + oldAreaName + " \n New Name: " + newAreaName);
 		Element Area = searchNode(Constants.TagArea, Constants.TagArea_name, oldAreaName);
 		if ( Area != null ){
-			Element outputToMe = null;
-			while ( (outputToMe = searchNode(Constants.TagArea__outputs__output, Constants.TagArea__outputs__output_area, oldAreaName)) != null ){
-				outputToMe.setAttribute(Constants.TagArea__outputs__output_area, newAreaName);
-				outputToMe = null;
+			Element inputToMe = null;
+			while ( (inputToMe = searchNode(Constants.TagArea__inputs__input, Constants.TagArea__inputs__input_area, oldAreaName)) != null ){
+				inputToMe.setAttribute(Constants.TagArea__inputs__input_area, newAreaName);
+				inputToMe = null;
 			}
 			
 			
@@ -307,11 +307,18 @@ public class DescriptorManager {
 		}
 	}
 	
+	/*****************************************************************************************************************************
+	 *  	PROCESS SECTION
+	 */
 	
-	
-	
-	public boolean addActivity(String aName, String cfName){
-		System.out.println("Agregando funcion cognitiva: " + aName + "_"+ cfName);
+	/***
+	 * 
+	 * @param aName
+	 * @param cfName
+	 * @return
+	 */
+	public boolean addProcess(String aName, String cfName){
+		System.out.println("Agregando Proceso: " + aName + "_"+ cfName);
 		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, aName);
 		if ( area == null )
 			return false;
@@ -326,7 +333,7 @@ public class DescriptorManager {
 	
 	public boolean deleteProccess(String aName, String cfName){
 		System.out.println("Descriptor --- Eliminando funcion cognitiva: " + aName + "_"+ cfName);
-		Element cf = searchCognitiveFunction(aName, cfName);
+		Element cf = searchProcess(aName, cfName);
 		if ( cf == null )
 			return false;
 		
@@ -340,8 +347,8 @@ public class DescriptorManager {
 	
 	
 	public boolean setProcessName(String aName, String cfOldName, String cfNewName){
-		Element cf = searchCognitiveFunction(aName, cfOldName);
-		if ( searchCognitiveFunction(aName, cfNewName) == null){
+		Element cf = searchProcess(aName, cfOldName);
+		if ( searchProcess(aName, cfNewName) == null){
 			cf.setAttribute(Constants.TagProcess_name, cfNewName);
 			saveDoc();
 			return true;
@@ -350,14 +357,21 @@ public class DescriptorManager {
 	}
 	
 	public boolean setProcessLanguage(String aName, String pName, String language){
-		Element cf = searchCognitiveFunction(aName, pName);
+		Element cf = searchProcess(aName, pName);
 		cf.setAttribute(Constants.TagProcess_language, language);
 		saveDoc();
 		return true;
 	}
 	
 	
+	public boolean setProcessType(String aName, String cfName, int type){
+		Element cf = searchProcess(aName, cfName);
+		cf.setAttribute(Constants.TagProcess_type, String.valueOf( type ) );
+		saveDoc();
+		return true;
+	}
 	
+	/*
 	public boolean setCognitiveFunctionInputID(String aName, String cfName, String ID){
 		Element cf = searchCognitiveFunction(aName, cfName);
 		NodeList cfChild = cf.getChildNodes();
@@ -396,14 +410,10 @@ public class DescriptorManager {
 		return false;
 	}
 	
+	*/
 	
-	public boolean setProcessType(String aName, String cfName, int type){
-		Element cf = searchCognitiveFunction(aName, cfName);
-		cf.setAttribute(Constants.TagProcess_type, String.valueOf( type ) );
-		saveDoc();
-		return true;
-	}
 	
+	/*
 	public boolean setCognitiveFunctionSubfunction(String aName, String cfName, boolean Subfunction ){
 		Element cf = searchCognitiveFunction(aName, cfName);
 		String value = (Subfunction)?"true":"false";
@@ -445,42 +455,42 @@ public class DescriptorManager {
 		//cf.setAttribute(LenguageTags.TagCognitiveFunction__Proccess, fullPath);
 		saveDoc();
 		return true;
-	}
+	}*/
 	
 	public boolean addConnection(String sourceName,  String areaTarget){
-		Element sourceArea = searchNode(Constants.TagArea, Constants.TagArea_name, sourceName);
-		Element outputs = (Element) sourceArea.getFirstChild();
+		Element targetArea = searchNode(Constants.TagArea, Constants.TagArea_name, areaTarget);
+		Element inputs = (Element) targetArea.getFirstChild();
 		
-		if ( outputs == null )
+		if ( inputs == null )
 			return false;
-		NodeList outputsChild = outputs.getChildNodes();
-		Element output = null;
-		for ( int i = 0; i < outputsChild.getLength(); i++ ){
-			output = (Element)outputsChild.item(i); 
-			if ( output.getAttribute(Constants.TagArea__outputs__output_area).equals(areaTarget))
+		NodeList inputsChild = inputs.getChildNodes();
+		Element input = null;
+		for ( int i = 0; i < inputsChild.getLength(); i++ ){
+			input = (Element) inputsChild.item(i); 
+			if ( input.getAttribute(Constants.TagArea__inputs__input_area).equals(sourceName))
 				return false;
 		}
 		
 		
-		output = doc.createElement(Constants.TagArea__outputs__output);
-		output.setAttribute(Constants.TagArea__outputs__output_area, areaTarget);
-		outputs.appendChild(output);
+		input = doc.createElement(Constants.TagArea__inputs__input);
+		input.setAttribute(Constants.TagArea__inputs__input_area, areaTarget);
+		inputs.appendChild(input);
 		saveDoc();
 		return true;
 	}
 	
-	public boolean deleteConection(String aName, String areaTarget){
+	public boolean deleteConection(String aName, String areaSource){
 		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, aName);
-		Element outputs = (Element) area.getFirstChild();
+		Element inputs = (Element) area.getFirstChild();
 		
-		if ( outputs == null )
+		if ( inputs == null )
 			return false;
-		NodeList outputsChild = outputs.getChildNodes();
-		Element output = null;
-		for ( int i = 0; i < outputsChild.getLength(); i++ ){
-			output = (Element)outputsChild.item(i); 
-			if ( output.getAttribute(Constants.TagArea__outputs__output_area).equals(areaTarget)){
-				outputs.removeChild(output);
+		NodeList inputsChild = inputs.getChildNodes();
+		Element input = null;
+		for ( int i = 0; i < inputsChild.getLength(); i++ ){
+			input = (Element)inputsChild.item(i); 
+			if ( input.getAttribute(Constants.TagArea__inputs__input_area).equals(areaSource)){
+				inputs.removeChild(input);
 				saveDoc();
 				return true;
 			}
@@ -488,9 +498,9 @@ public class DescriptorManager {
 		return false;
 	}
 	
-	public boolean setCognitiveFunctionIndexList(String aName, String cfName, String IndexList){
+	/*public boolean setCognitiveFunctionIndexList(String aName, String cfName, String IndexList){
 		return true;
-	}
+	}*/
 	
 	
 	
@@ -519,10 +529,10 @@ public class DescriptorManager {
 	}
 	
 	
-	private Element searchCognitiveFunction(String areaName, String cognitiveFunctionName){
+	private Element searchProcess(String routerName, String processName){
 		
 		
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
+		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, routerName);
 		if (area == null )
 			return null;
 		
@@ -532,7 +542,7 @@ public class DescriptorManager {
 		if ( functions.getLength() != 0){
 		
 			for (int i = 0 ; i < functions.getLength(); i++){
-				if( ((Element)functions.item(i)).getAttribute(Constants.TagProcess_name).equals(cognitiveFunctionName) ){
+				if( ((Element)functions.item(i)).getAttribute(Constants.TagProcess_name).equals(processName) ){
 					return (Element)functions.item(i);
 				}
 			}
@@ -565,18 +575,18 @@ public class DescriptorManager {
 			//Get the outputs of this area
 			nodesTagged = searchNode(Constants.TagArea, Constants.TagArea_name, area.getName()).getFirstChild().getChildNodes();
 			for ( int c = 0; c < nodesTagged.getLength(); c++){
-				Area target = null;
-				String targetName = ((Element) nodesTagged.item(c)).getAttribute(Constants.TagArea__outputs__output_area);
+				Area source = null;
+				String sourceName = ((Element) nodesTagged.item(c)).getAttribute(Constants.TagArea__inputs__input_area);
 				for (int searchTarget = 0; searchTarget < areas.size(); searchTarget++ ){
-					if ( areas.get(searchTarget).getName().equals(targetName)){
-						target = areas.get(searchTarget);
+					if ( areas.get(searchTarget).getName().equals(sourceName)){
+						source = areas.get(searchTarget);
 						break;
 					}
 				}
-				if ( target != null){
+				if ( source != null){
 					Connection con = new Connection();
-					con.setSource(area);
-					con.setTarget(target);
+					con.setSource( source );
+					con.setTarget( area );
 				}
 			}
 		}

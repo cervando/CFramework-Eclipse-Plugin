@@ -1,14 +1,14 @@
-package kmiddlePlugin.utils;
+package CPlugin.utils;
 
 import org.eclipse.core.resources.IProject;
 
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
-import kmiddlePlugin.parser.AreaNamesManager;
-import kmiddlePlugin.parser.DescriptorManager;
-import kmiddlePlugin.parser.InitManager;
-import kmiddlePlugin.parser.SourceCodeManager;
+import CPlugin.model.Activity;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
+import CPlugin.parser.AreaNamesManager;
+import CPlugin.parser.DescriptorManager;
+import CPlugin.parser.InitManager;
+import CPlugin.parser.SourceCodeManager;
 
 
 /**
@@ -135,8 +135,8 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	public boolean addActivity(String aName, Activity p, String processName){
 		
 		String name = processName;
-		if ( descriptorManager.addActivity(aName, name) ){
-			if ( areaNamesManager.addActivity(aName, name)){
+		if ( descriptorManager.addProcess(aName, name) ){
+			if ( areaNamesManager.addProcess(aName, name)){
 				return sourceCodeManager.addActivity(aName, name);
 			}
 		}
@@ -236,6 +236,9 @@ public class KMiddleProject extends EclipseProjectFileManager {
 		return descriptorManager.deleteConection(aNameSource, aNameTarget);
 	}
 	
+	
+	
+	/*
 	public boolean setCognitiveFunctionInputID(String aName, String cfName, String ID){
 		aName = validateClassName(aName);
 		cfName = validateClassName(cfName);
@@ -283,7 +286,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 		aName = validateClassName(aName);
 		cfName = validateClassName(cfName);
 		return descriptorManager.setCognitiveFunctionIndexList(aName, cfName, IndexList);
-	}
+	}*/
 	
 	
 	public void updateAreaNames(){

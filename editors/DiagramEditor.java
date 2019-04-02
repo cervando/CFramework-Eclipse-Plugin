@@ -1,4 +1,4 @@
-package kmiddlePlugin.editors;
+package CPlugin.editors;
 
 
 
@@ -29,32 +29,33 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.WorkbenchPart;
 
-import kmiddlePlugin.gefView.Policies.commands.ConnectionCreateCommand;
-import kmiddlePlugin.gefView.Policies.commands.ConnectionDeleteCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityChangedLanguageCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityChangedNameCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityCreatedCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityDeletedCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangeConstraintCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedBlackBoxCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedNameCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedXCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedYCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeCreateCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeDeleteCommand;
-import kmiddlePlugin.listener.GraphEditorSelectionListener;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
-import kmiddlePlugin.utils.KMiddleProject;
-import kmiddlePlugin.view.factories.ConnectionFactory;
-import kmiddlePlugin.view.factories.GraphEditPartFactory;
-import kmiddlePlugin.view.factories.AreaFactory;
+import CPlugin.gefView.Policies.commands.ConnectionCreateCommand;
+import CPlugin.gefView.Policies.commands.ConnectionDeleteCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityChangedLanguageCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityChangedNameCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityCreatedCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityDeletedCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangeConstraintCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedBlackBoxCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedNameCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedXCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedYCommand;
+import CPlugin.gefView.Policies.commands.area.NodeCreateCommand;
+import CPlugin.gefView.Policies.commands.area.NodeDeleteCommand;
+import CPlugin.listener.GraphEditorSelectionListener;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
+import CPlugin.utils.KMiddleProject;
+import CPlugin.view.factories.ConnectionFactory;
+import CPlugin.view.factories.GraphEditPartFactory;
+import CPlugin.view.factories.AreaFactory;
 
 public class DiagramEditor extends EditorPart {
 
@@ -63,6 +64,7 @@ public class DiagramEditor extends EditorPart {
 	private CreationTool createNode;
 	private ConnectionCreationTool createConnection;
 	private boolean dirty = false;
+	private GraphEditorSelectionListener graphEditorListener;
 	
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		IFile original= (input instanceof IFileEditorInput) ? ((IFileEditorInput) input).getFile() : null;
@@ -75,8 +77,14 @@ public class DiagramEditor extends EditorPart {
 		initEditDomain();
 		initActionRegistry();
 		initGraphEditorListener();
+		showPropertiesWindow();
 	}
 	
+	private void showPropertiesWindow() throws PartInitException{
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		page.showView(org.eclipse.ui.IPageLayout.ID_PROP_SHEET);
+		
+	}
 	
 	
 	
@@ -192,7 +200,7 @@ public class DiagramEditor extends EditorPart {
 	}
 	
 	private void initGraphEditorListener() {		 
-		GraphEditorSelectionListener graphEditorListener = new GraphEditorSelectionListener(actionRegistry);
+		graphEditorListener = new GraphEditorSelectionListener(actionRegistry);
 		ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
 		editDomain.getCommandStack().addCommandStackEventListener(graphEditorListener);
 		selectionService.addSelectionListener(graphEditorListener);
@@ -298,7 +306,7 @@ public class DiagramEditor extends EditorPart {
 			
 		//--------- Activity modifications
 		} else if ( command instanceof ActivityCreatedCommand ){
-			kmiddlePlugin.model.Activity p =  ((ActivityCreatedCommand) command).getProccess();
+			CPlugin.model.Activity p =  ((ActivityCreatedCommand) command).getProccess();
 			kmp.addActivity(((ActivityCreatedCommand) command).getAreaName(), p,((ActivityCreatedCommand) command).getProcessName());
 		
 		} else if ( command instanceof ActivityChangedNameCommand ){
@@ -306,7 +314,7 @@ public class DiagramEditor extends EditorPart {
 			kmp.setActivityName(pcnc.getAreaName(), pcnc.getOldName(), pcnc.getNewName(), pcnc.getLanguage());
 		
 		} else if ( command instanceof ActivityDeletedCommand ){
-			kmiddlePlugin.model.Activity p =  ((ActivityDeletedCommand) command).getProccess();
+			CPlugin.model.Activity p =  ((ActivityDeletedCommand) command).getProccess();
 			kmp.deleteActivity(((ActivityDeletedCommand) command).getAreaName(), p.getName(), p.getLanguage());		
 			
 		} else if ( command instanceof ActivityTypeChangedCommand ){
@@ -332,5 +340,12 @@ public class DiagramEditor extends EditorPart {
 	public boolean isSaveAsAllowed() {return false;}
 	public void setFocus() {}
 	public void doSaveAs() {}
+	
+	@Override
+	public void dispose() {
+		ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
+		selectionService.removeSelectionListener(graphEditorListener);
+	}
+	
 
 }

@@ -1,10 +1,10 @@
-package kmiddlePlugin.gefView.Policies.commands.activity;
+package CPlugin.gefView.Policies.commands.activity;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.model.Area;
+import CPlugin.model.Activity;
+import CPlugin.model.Area;
 
 public class ActivityDeletedCommand extends Command{
 	

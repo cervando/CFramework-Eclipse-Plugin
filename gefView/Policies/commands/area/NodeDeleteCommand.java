@@ -1,13 +1,13 @@
-package kmiddlePlugin.gefView.Policies.commands.area;
+package CPlugin.gefView.Policies.commands.area;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
-import kmiddlePlugin.model.Graph;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
+import CPlugin.model.Graph;
 
 import org.eclipse.gef.commands.Command;
 

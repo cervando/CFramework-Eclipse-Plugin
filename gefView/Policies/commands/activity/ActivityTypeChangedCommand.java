@@ -1,6 +1,6 @@
-package kmiddlePlugin.gefView.Policies.commands.activity;
+package CPlugin.gefView.Policies.commands.activity;
 
-import kmiddlePlugin.model.Activity;
+import CPlugin.model.Activity;
 
 import org.eclipse.gef.commands.Command;
 
@@ -12,7 +12,7 @@ public class ActivityTypeChangedCommand extends Command{
 	
 	
 	
-	public ActivityTypeChangedCommand(kmiddlePlugin.model.Activity p, int newVal){
+	public ActivityTypeChangedCommand(CPlugin.model.Activity p, int newVal){
 		process = p;
 		this.newVal = newVal;
 		oldVal = p.getType();

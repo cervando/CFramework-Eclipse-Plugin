@@ -1,4 +1,4 @@
-package kmiddlePlugin.parser;
+package CPlugin.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-import kmiddlePlugin.utils.Constants;
+import CPlugin.utils.Constants;
 
 public class SourceCodeManager extends Manager{
 
@@ -140,7 +140,7 @@ public class SourceCodeManager extends Manager{
 		fileReplaceAll(areaClass, 
 							"this.namer = AreaNames.class;",
 							"this.namer = AreaNames.class;\n\t\t"+
-							KMiddleCodeFactory.addActivityType(areaName, activityName));		
+							KMiddleCodeFactory.addProcessLanguage(areaName, activityName));		
 		return true;
 	}
 	

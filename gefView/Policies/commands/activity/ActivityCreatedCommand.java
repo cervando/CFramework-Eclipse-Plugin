@@ -1,11 +1,11 @@
-package kmiddlePlugin.gefView.Policies.commands.activity;
+package CPlugin.gefView.Policies.commands.activity;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.view.AreaEditPart;
+import CPlugin.model.Activity;
+import CPlugin.model.Area;
+import CPlugin.view.AreaEditPart;
 
 public class ActivityCreatedCommand extends Command{
 	

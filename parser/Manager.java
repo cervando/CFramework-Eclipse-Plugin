@@ -1,7 +1,8 @@
-package kmiddlePlugin.parser;
+package CPlugin.parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
@@ -83,14 +84,44 @@ public class Manager {
 		return src.getFolder(pack).getFile(cName);
 	}
 	
-	protected String getPackageName(String area){
-		return area.replace(" ", "").substring(0, 1).toLowerCase() + area.substring(1);
+	protected String getPackageName(String name){
+		return getLowerCamelCase(name);
 	}
 	
 	
-	protected String getClassName(String areaName){
-		return areaName.replace(" ", "").substring(0, 1).toUpperCase() + areaName.substring(1);
+	protected String getClassName(String name){
+		return getUpperCamelCase(name);
 	}
+	
+	protected String getLowerCamelCase(String name){
+		String[] words = name.split(" ");
+		
+		//To lower Case first Word
+		words[0] = words[0].toLowerCase();
+		
+		String word = words[0];
+		
+		for ( int w = 1; w < words.length; w++ ) {
+			words[w] = words[w].toLowerCase();
+			word += words[w].substring(0, 1).toUpperCase() + words[w].substring(1);
+		}
+		
+		return word;
+	}
+	
+	protected String getUpperCamelCase(String name){
+		String[] words = name.split(" ");
+		
+		String word = "";
+		
+		for ( int w = 0; w < words.length; w++ ) {
+			words[w] = words[w].toLowerCase();
+			word += words[w].substring(0, 1).toUpperCase() + words[w].substring(1);
+		}
+		
+		return word;
+	}
+	
 	
 	protected String readAllContente( IFile file ){
 		StringBuilder fileCode = new StringBuilder("");
@@ -121,13 +152,9 @@ public class Manager {
 			}
 			fileInput.close();
 			
-			line = content.toString().replaceAll(regex,replacement);
+			line = content.toString().replaceAll(regex,replacement);	
 			
-			InputStream contenInputStream = new ByteArrayInputStream(line.getBytes());
-			work = new MyProgressMonitor();
-			file.setContents(contenInputStream,true,true,work);
-			while( !work.isDone() );
-			contenInputStream.close();
+			saveFile(file, line);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -158,11 +185,8 @@ public class Manager {
 				line  = matcher.group();
 				fullText = fullText.replace(line, line.replaceAll(regex, replacement));
 			}
-			InputStream contenInputStream = new ByteArrayInputStream(fullText.getBytes());
-			work = new MyProgressMonitor();
-			file.setContents(contenInputStream,true,true,work);
-			while( !work.isDone() );
-			contenInputStream.close();
+			
+			saveFile(file, fullText);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,6 +194,44 @@ public class Manager {
 		}
 		return true;
 	}
+	
+	protected boolean addAfterLine(IFile file, String lineRegex, String newLine){
+		try {
+			BufferedReader fileInput = new BufferedReader(new InputStreamReader(file.getContents()));
+			
+			String line;
+			StringBuilder content = new StringBuilder();
+			
+			while ( (line = fileInput.readLine()) != null ) {
+				content.append(line + "\n");
+				if ( line.matches( lineRegex ) )
+					content.append( newLine + "\n");
+			}
+			fileInput.close();
+			saveFile(file, content.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
+	protected boolean saveFile(IFile file, String text ) throws IOException, CoreException {
+		
+		InputStream contenInputStream = new ByteArrayInputStream( text.getBytes() );
+		work = new MyProgressMonitor();
+		if ( file.exists() )
+			file.setContents(contenInputStream,true,true,work);
+		else 
+			file.create(contenInputStream, true, work);
+		while( !work.isDone() );
+		contenInputStream.close();
+		return true;
+		
+	}
+	
 	
 	class MyProgressMonitor implements IProgressMonitor{
 
@@ -179,15 +241,15 @@ public class Manager {
 		
 		public void beginTask(String arg0, int MINIMUM_RESOLUTION) {
 			// TODO Auto-generated method stub
-			System.out.println("Empezo");
-			System.out.println(MINIMUM_RESOLUTION);
+			//System.out.println("Empezo");
+			//System.out.println(MINIMUM_RESOLUTION);
 			minimum = MINIMUM_RESOLUTION;
 		}
 		
 		private boolean done = false;
 		
 		public void done() {
-			System.out.println("done\n\n\n\n");
+			//System.out.println("done\n\n\n\n");
 			done = true;
 		}
 		
@@ -197,32 +259,32 @@ public class Manager {
 
 		public void internalWorked(double arg0) {
 
-			System.out.println("internalwork");
+			//System.out.println("internalwork");
 		}
 
 		public boolean isCanceled() {
 			// TODO Auto-generated method stub
 
-			System.out.println("iscancelled");
+			//System.out.println("iscancelled");
 			return false;
 		}
 
 		public void setCanceled(boolean arg0) {
 			// TODO Auto-generated method stub
 
-			System.out.println("setcanceled");
+			//System.out.println("setcanceled");
 		}
 
 		public void setTaskName(String arg0) {
 			// TODO Auto-generated method stub
 
-			System.out.println("setName");
+			//System.out.println("setName");
 		}
 
 		public void subTask(String arg0) {
 			// TODO Auto-generated method stub
 
-			System.out.println("subtask");
+			//System.out.println("subtask");
 			done();
 		}
 
@@ -230,7 +292,7 @@ public class Manager {
 		public void worked(int worked) {
 			// TODO Auto-generated method stub
 
-			System.out.println("trabajo");
+			//System.out.println("trabajo");
 			work += worked;
 			if ( work >= minimum )
 				done();

@@ -1,6 +1,6 @@
-package kmiddlePlugin.gefView.Policies.commands.area;
+package CPlugin.gefView.Policies.commands.area;
 
-import kmiddlePlugin.model.Area;
+import CPlugin.model.Area;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;

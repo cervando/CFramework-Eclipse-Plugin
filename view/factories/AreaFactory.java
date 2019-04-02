@@ -1,6 +1,6 @@
-package kmiddlePlugin.view.factories;
+package CPlugin.view.factories;
 
-import kmiddlePlugin.model.Area;
+import CPlugin.model.Area;
 
 import org.eclipse.gef.requests.CreationFactory;
 

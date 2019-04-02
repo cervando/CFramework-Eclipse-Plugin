@@ -1,9 +1,9 @@
-package kmiddlePlugin.utils;
+package CPlugin.utils;
 
 import java.util.List;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
 
 public class ModelValidator {
 

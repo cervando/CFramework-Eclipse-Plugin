@@ -1,4 +1,4 @@
-package kmiddlePlugin.view;
+package CPlugin.view;
 
 import java.util.List;
 import java.util.Observable;
@@ -13,10 +13,10 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.ISelection;
 
-import kmiddlePlugin.editors.DiagramEditor;
-import kmiddlePlugin.gefView.Policies.NodeChangeXYEditPolicy;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
+import CPlugin.editors.DiagramEditor;
+import CPlugin.gefView.Policies.NodeChangeXYEditPolicy;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
 
 public class GraphEditPart extends AbstractGraphicalEditPart implements Observer {
 	

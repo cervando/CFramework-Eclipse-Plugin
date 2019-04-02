@@ -1,10 +1,10 @@
-package kmiddlePlugin.model;
+package CPlugin.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-import kmiddlePlugin.view.AreaEditPart;
+import CPlugin.view.AreaEditPart;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

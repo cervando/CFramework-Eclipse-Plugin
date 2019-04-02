@@ -1,4 +1,4 @@
-package kmiddlePlugin.propertySources;
+package CPlugin.propertySources;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityDeletedCommand;
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.propertySources.widgets.ButtonPropertyDescriptor;
+import CPlugin.gefView.Policies.commands.activity.ActivityDeletedCommand;
+import CPlugin.model.Activity;
+import CPlugin.model.Area;
+import CPlugin.propertySources.widgets.ButtonPropertyDescriptor;
 
 public class ProcessArrayPropertySource implements IPropertySource{
 	
@@ -49,7 +49,7 @@ public class ProcessArrayPropertySource implements IPropertySource{
 							//ui.deleteProcess(cfarray.get(index).area.getName(),cfarray.get(index).name );
 							MessageBox dialog = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
 							dialog.setText("Confirmar");
-							dialog.setMessage("¿Esta seguro de que desea eliminar este proceso?");
+							dialog.setMessage("ï¿½Esta seguro de que desea eliminar este proceso?");
 
 							if ( SWT.OK == dialog.open()){
 								

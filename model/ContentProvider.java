@@ -1,4 +1,4 @@
-package kmiddlePlugin.model;
+package CPlugin.model;
 
 
 

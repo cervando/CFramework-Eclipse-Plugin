@@ -1,4 +1,4 @@
-package kmiddlePlugin.propertySources;
+package CPlugin.propertySources;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -15,15 +15,15 @@ import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityCreatedCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedBlackBoxCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedNameCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedXCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangedYCommand;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.propertySources.widgets.ButtonPropertyDescriptor;
-import kmiddlePlugin.utils.ModelValidator;
+import CPlugin.gefView.Policies.commands.activity.ActivityCreatedCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedBlackBoxCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedNameCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedXCommand;
+import CPlugin.gefView.Policies.commands.area.NodeChangedYCommand;
+import CPlugin.model.Area;
+import CPlugin.propertySources.widgets.ButtonPropertyDescriptor;
+import CPlugin.utils.ModelValidator;
 
 public class AreaPropertySource implements IPropertySource{
 	

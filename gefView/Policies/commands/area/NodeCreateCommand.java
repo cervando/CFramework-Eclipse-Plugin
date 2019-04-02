@@ -1,7 +1,7 @@
-package kmiddlePlugin.gefView.Policies.commands.area;
+package CPlugin.gefView.Policies.commands.area;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;

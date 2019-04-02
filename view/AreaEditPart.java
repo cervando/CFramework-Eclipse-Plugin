@@ -1,4 +1,4 @@
-package kmiddlePlugin.view;
+package CPlugin.view;
 
 import java.util.List;
 import java.util.Observable;
@@ -16,13 +16,13 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import kmiddlePlugin.editors.DiagramEditor;
-import kmiddlePlugin.gefView.Policies.ConnectionCreateEditPolicy;
-import kmiddlePlugin.gefView.Policies.NodeDeleteEditPolicy;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
-import kmiddlePlugin.model.Graph;
-import kmiddlePlugin.view.Figures.AreaFigure;
+import CPlugin.editors.DiagramEditor;
+import CPlugin.gefView.Policies.ConnectionCreateEditPolicy;
+import CPlugin.gefView.Policies.NodeDeleteEditPolicy;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
+import CPlugin.model.Graph;
+import CPlugin.view.Figures.AreaFigure;
 
 
 public class AreaEditPart extends AbstractGraphicalEditPart implements Observer, NodeEditPart {

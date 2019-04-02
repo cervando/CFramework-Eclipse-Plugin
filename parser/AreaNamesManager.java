@@ -1,9 +1,7 @@
-package kmiddlePlugin.parser;
+package CPlugin.parser;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
@@ -17,27 +15,22 @@ public class AreaNamesManager extends Manager {
     	super(project);
     	
 		//Creates AreaNames file
-		areaNamesFile = config.getFile("AreaNames.java");
-		if ( !areaNamesFile.exists()){
-			byte[] code = KMiddleCodeFactory.newAreaNames().getBytes();
-			InputStream source = new ByteArrayInputStream(code);
-		    try{
-		    	work = new MyProgressMonitor();
-		    	areaNamesFile.create(source, true, work);
-		    	while( !work.isDone() );
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		areaNamesFile = config.getFile("Names.java");
+		
+	    try{
+	    	if ( !areaNamesFile.exists() )
+	    		saveFile(areaNamesFile, KMiddleCodeFactory.newNames());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}		
 	}
 	
-	public boolean addArea(String className) {
+	public boolean addArea(String name) {
 		try {
-			//String value = String.valueOf(getAreaNames_NextAreaIndex());
-			String value = "\"" + getClassName(className) + "\"";
+			String className = getClassName(name);
 			fileReplaceAll(areaNamesFile,
 					"\n}", 
-					"\n\tpublic static int " + className + "\t= IDHelper.generateID(" + value + ", 0, 0);\n}");
+					"\n\tpublic static long " + className + "\t= IDHelper.generateID(\"" + name + "\");\n}");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,13 +38,23 @@ public class AreaNamesManager extends Manager {
 		return false;
 	}
 
-	public boolean setNameArea(String oldClassName, String newClassName) {
+	public boolean deleteArea(String name) {
+		
+		String className = getClassName(name);
+		return fileReplaceAll(areaNamesFile,
+				".*" + Pattern.quote( className ) + "[_\\s\\t\\/= ].*\n",
+				"");	
+	}
+	
+	public boolean setNameArea(String oldName, String newName) {
 		try {
+			String oldClassName = getClassName(oldName);
+			String newClassName = getClassName(newName);
 			// Replace area name
 			fileReplaceAll(areaNamesFile,
-						"public static int " + Pattern.quote(getClassName(oldClassName))	+ "[_\\s\\t\\/=]", 
-						Pattern.quote(getClassName(oldClassName)),
-						getClassName(newClassName));
+						"public static long " + Pattern.quote(oldClassName)	+ "[_\\s\\t\\/= ]", 
+						Pattern.quote(oldName),
+						newClassName );
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,96 +62,18 @@ public class AreaNamesManager extends Manager {
 		return false;
 	}
 
-	public boolean deleteArea(String className) {
-		
-		className = getClassName(className);
-		return fileReplaceAll(areaNamesFile,
-				".*" + Pattern.quote( className ) + ".*\n",
-				"");	
-		/*
+
+	public boolean addProcess(String areaName, String processName) {
 		
 		try {
-			StringBuilder newContent = new StringBuilder();
-			InputStream fileInputStream =  areaNamesFile.getContents();
-			BufferedReader fileBr = new BufferedReader(new InputStreamReader(fileInputStream));
-			String line = null;	
-			while ((line = fileBr.readLine()) != null) {
-				if ( !line.contains("public static int " + Pattern.quote(className) + "\t= ") && !line.contains("public static int " + Pattern.quote(className) + "_") )
-					newContent.append(line + "\n");
-			}
-			fileBr.close();
-			areaNamesFile.setContents(new ByteArrayInputStream(newContent.toString().getBytes()), true, true, null);
+			String areaClass = getClassName(areaName);
+			String processClass = getClassName(processName);
+			addAfterLine(areaNamesFile,
+					".*public static long " + areaClass + "[_\\s\\t\\/= ].*",
+					"\tpublic static long " + areaClass + "_" + processClass + "\t= IDHelper.generateID(\"" + areaName + "\",\"" + processClass + "\");\n}");
 			return true;
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}*/
-	}
-
-	/*private int getAreaNames_NextAreaIndex() {
-		try {
-			InputStream fileInputStream =  areaNamesFile.getContents();
-			BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream));
-
-			String line = null;
-			int value = 0;
-			while ((line = br.readLine()) != null) {
-				if (line.contains("\tpublic static int ")) {
-					if (!line.contains("_")) {
-						value = getValueFromAreaLine(line) + 1;
-					}
-				}
-			}
-			br.close();
-			if (value == 0) {
-				return 1;
-			}
-			return value;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return 0;
-	}*/
-	
-	
-	/*private int getValueFromAreaLine(String line){
-		String funtion = line.substring(line.indexOf("=") + 1);
-		funtion = funtion.replace("IDHelper.generateID(", "");
-		funtion = funtion.substring(0, funtion.indexOf(','));
-		return Integer.valueOf(funtion.trim());
-	}*/
-
-	public boolean addActivity(String areaName, String cfName) {
-		
-		
-		String value = getNextAreaNamesActivity(areaName);
-		try {
-			StringBuilder newContent = new StringBuilder();
-			
-			InputStream fileInputStream =  areaNamesFile.getContents();
-			BufferedReader fileBr = new BufferedReader(new InputStreamReader(fileInputStream));
-			
-			String line = null;
-
-			boolean finded = false;
-			while ((line = fileBr.readLine()) != null) {
-				if (line.contains("public static int " + areaName + "\t= ")
-						|| line.contains("public static int " + areaName + "_")) {
-					finded = true;
-				} else {
-					if (finded) {
-						String nl = "\tpublic static int " + areaName + "_" + cfName + "\t= " + value + ";\n";
-						newContent.append(nl);
-						finded = false;
-					}
-				}
-				newContent.append(line + "\n");
-			}
-			fileBr.close();
-			
-			areaNamesFile.setContents(new ByteArrayInputStream(newContent.toString().getBytes()), true, true, null);
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.toString());
 		}
 		return false;
 	}
@@ -156,8 +81,8 @@ public class AreaNamesManager extends Manager {
 	public boolean setNameActivity(String oldAreaName, String newAreaName,  String cfOldName, String cfNewName) {
 		try {
 			fileReplaceAll(areaNamesFile,
-					"public static int " + Pattern.quote(getClassName(oldAreaName) + "_" + getClassName(cfOldName)), 
-					"public static int " + getClassName(newAreaName) + "_" + getClassName(cfNewName));
+					"public static long " + Pattern.quote(getClassName(oldAreaName) + "_" + getClassName(cfOldName)), 
+					"public static long " + getClassName(newAreaName) + "_" + getClassName(cfNewName));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,107 +92,17 @@ public class AreaNamesManager extends Manager {
 
 	/**
 	 * 
-	 * @param name
-	 * @param actiName
+	 * @param areaName
+	 * @param processName
 	 */
-	public boolean deleteActivity(String name, String actiName) {
-		try {
-			StringBuilder newContent = new StringBuilder();
-			InputStream fileInputStream =  areaNamesFile.getContents();
-			BufferedReader fileBr = new BufferedReader(new InputStreamReader(fileInputStream));
-			String line = null;
-			while ((line = fileBr.readLine()) != null) {
-				if (!line.contains("public static int " + name + "_" + actiName)) {
-					newContent.append(line + "\n");
-				}
-			}
-			fileBr.close();
-			areaNamesFile.setContents(new ByteArrayInputStream(newContent.toString().getBytes()), true, true, null);
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
-		return false;
-	}
+	public boolean deleteActivity(String areaName, String processName) {
 
-	private String getNextAreaNamesActivity(String areaName) {
-		//areaName = "SN" + areaName;
-		try {
-			String areaVal = areaName;
-			BufferedReader br = new BufferedReader(new InputStreamReader(areaNamesFile.getContents()));
-
-			String line = null;
-			int value = 0;
-			while ((line = br.readLine()) != null) {
-				if (line.contains("\tpublic static int ")) {
-					/*if (line.contains(" " + areaName + "\t")){
-						areaVal = getValueFromAreaLine(line);
-					}else*/ 
-					if (line.contains(" " + areaName + "_")){
-						value = getValueFromActivityLine(line) + 1;
-					}
-				}
-			}
-			br.close();
-			if (value == 0)
-				value = 1;
-			
-			return "IDHelper.generateID(\"" + areaVal + "\"," + value + ",0)";
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-		}
-		return null;
+		String areaClass = getClassName(areaName);
+		String processClass = getClassName(processName);
+		return fileReplaceAll(areaNamesFile,
+				".*" + Pattern.quote( areaClass ) + "_" + Pattern.quote( processClass ) + ".*\n",
+				"");
 	}
-	
-	
-	private int getValueFromActivityLine(String line){
-		String funtion = line.substring(line.indexOf("=") + 1);
-		funtion = funtion.replace("IDHelper.generateID(", "");
-		funtion = funtion.substring(funtion.indexOf(',') + 1);
-		funtion = funtion.substring(0, funtion.indexOf(','));
-		return Integer.valueOf(funtion.trim());
-	}
-	
-	
-/*	public boolean createAreaNamePython(){
-		String[] lines = readAllContente(areaNamesFile).split("\n");
-		StringBuilder content = new StringBuilder("");
-		
-		//Get the values from the AreaNames.java File
-		for ( int x = 0; x < lines.length; x++){
-			if ( lines[x].contains("public static int") ){
-				String[] vals = lines[x].substring(lines[x].indexOf("int") + 3, lines[x].lastIndexOf(";")).split("=");
-				content.append(vals[0].replace(" ", "").replace("\t", "") 
-								+ " = " 
-								+ vals[1].replace(" ", "").replace("\t", "") 
-								+ "\n"); 
-			}
-		}
-		
-		
-		//Writhe the AreaNames.py file and the __init__
-		IFile areaNamesPython = ((IFolder)areaNamesFile.getParent()).getFile("AreaNames.py");
-		try {
-			if ( areaNamesPython.exists() )
-				areaNamesPython.delete(true, null);
-			areaNamesPython.create(new ByteArrayInputStream(content.toString().getBytes()), true, null);
-			
-			
-			areaNamesPython =  ((IFolder)areaNamesFile.getParent()).getFile("__init__.py");
-			if ( !areaNamesPython.exists() )
-				areaNamesPython.create(new ByteArrayInputStream(new byte[]{}), true, null);
-			
-			areaNamesPython =  ((IFolder)areaNamesFile.getParent().getParent()).getFile("__init__.py");
-			if ( !areaNamesPython.exists() )
-				areaNamesPython.create(new ByteArrayInputStream(new byte[]{}), true, null);
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
-		return true;
-	}*/
 	
 	
 /*	public void updateAreaNamesVersion(){

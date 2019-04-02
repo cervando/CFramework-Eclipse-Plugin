@@ -1,9 +1,9 @@
-package kmiddlePlugin.gefView.Policies.commands.area;
+package CPlugin.gefView.Policies.commands.area;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import kmiddlePlugin.model.Area;
+import CPlugin.model.Area;
 
 public class NodeChangedXCommand extends Command{
 	

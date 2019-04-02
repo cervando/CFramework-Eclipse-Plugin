@@ -1,4 +1,4 @@
-package kmiddlePlugin.model;
+package CPlugin.model;
 
 import java.util.ArrayList;
 import java.util.List;

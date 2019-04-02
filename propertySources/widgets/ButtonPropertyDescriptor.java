@@ -1,4 +1,4 @@
-package kmiddlePlugin.propertySources.widgets;
+package CPlugin.propertySources.widgets;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.events.MouseListener;

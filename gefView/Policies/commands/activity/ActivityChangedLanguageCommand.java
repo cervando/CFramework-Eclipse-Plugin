@@ -1,8 +1,8 @@
-package kmiddlePlugin.gefView.Policies.commands.activity;
+package CPlugin.gefView.Policies.commands.activity;
 
 import org.eclipse.gef.commands.Command;
 
-import kmiddlePlugin.model.Activity;
+import CPlugin.model.Activity;
 
 public class ActivityChangedLanguageCommand extends Command{
 	
@@ -15,7 +15,7 @@ public class ActivityChangedLanguageCommand extends Command{
 	
 	
 	
-	public ActivityChangedLanguageCommand(kmiddlePlugin.model.Activity p, int newLenguage){
+	public ActivityChangedLanguageCommand(CPlugin.model.Activity p, int newLenguage){
 		process = p;
 		this.newLangage = newLenguage;
 		oldLanguage = p.getLanguageIndex();

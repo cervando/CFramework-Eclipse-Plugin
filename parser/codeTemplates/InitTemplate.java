@@ -1,4 +1,4 @@
-package kmiddlePlugin.parser.codeTemplates;
+package CPlugin.parser.codeTemplates;
 
 public class InitTemplate {
 
@@ -6,7 +6,7 @@ public class InitTemplate {
 					
 "package config;" +
 "\n" +
-"\nimport kmiddle2.nodes.service.Igniter;" +
+"\nimport cFramework.nodes.service.Igniter;" +
 "\n" +
 "\npublic class Init extends Igniter{" + 
 "\n" +

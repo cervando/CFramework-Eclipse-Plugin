@@ -1,4 +1,4 @@
-package kmiddlePlugin.gefView.Policies;
+package CPlugin.gefView.Policies;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -6,10 +6,10 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
-import kmiddlePlugin.gefView.Policies.commands.area.NodeChangeConstraintCommand;
-import kmiddlePlugin.gefView.Policies.commands.area.NodeCreateCommand;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
+import CPlugin.gefView.Policies.commands.area.NodeChangeConstraintCommand;
+import CPlugin.gefView.Policies.commands.area.NodeCreateCommand;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
 
 
 /**

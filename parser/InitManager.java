@@ -1,4 +1,4 @@
-package kmiddlePlugin.parser;
+package CPlugin.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

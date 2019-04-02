@@ -1,4 +1,4 @@
-package kmiddlePlugin.view;
+package CPlugin.view;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
@@ -8,8 +8,8 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import kmiddlePlugin.gefView.Policies.ConnectionDeleteEditPolicy;
-import kmiddlePlugin.model.Connection;
+import CPlugin.gefView.Policies.ConnectionDeleteEditPolicy;
+import CPlugin.model.Connection;
 
 
 public class ConnectionEditPart extends AbstractConnectionEditPart {

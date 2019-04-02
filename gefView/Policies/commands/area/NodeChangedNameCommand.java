@@ -1,8 +1,8 @@
-package kmiddlePlugin.gefView.Policies.commands.area;
+package CPlugin.gefView.Policies.commands.area;
 
 import org.eclipse.gef.commands.Command;
 
-import kmiddlePlugin.model.Area;
+import CPlugin.model.Area;
 
 public class NodeChangedNameCommand extends Command{
 	

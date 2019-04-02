@@ -1,7 +1,7 @@
-package kmiddlePlugin.gefView.Policies.commands;
+package CPlugin.gefView.Policies.commands;
 
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
 
 import org.eclipse.gef.commands.Command;
 

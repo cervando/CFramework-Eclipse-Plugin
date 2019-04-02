@@ -1,4 +1,4 @@
-package kmiddlePlugin.propertySources;
+package CPlugin.propertySources;
 
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -7,11 +7,11 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityChangedLanguageCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityChangedNameCommand;
-import kmiddlePlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
-import kmiddlePlugin.model.Activity;
-import kmiddlePlugin.propertySources.widgets.ButtonPropertyDescriptor;
+import CPlugin.gefView.Policies.commands.activity.ActivityChangedLanguageCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityChangedNameCommand;
+import CPlugin.gefView.Policies.commands.activity.ActivityTypeChangedCommand;
+import CPlugin.model.Activity;
+import CPlugin.propertySources.widgets.ButtonPropertyDescriptor;
 
 public class ProcessPropertySource implements IPropertySource{
 	

@@ -1,4 +1,4 @@
-package kmiddlePlugin.contributions;
+package CPlugin.contributions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -59,7 +59,7 @@ public class PackageExplorerContributions extends AbstractHandler{
 	    	
 	    	IFolder libFolder = project.getFolder("libraries");
 	    	IFolder logFolder = project.getFolder("log");
-	    	IFile file = project.getFile("diagram.kua");
+	    	IFile file = project.getFile("diagram.cua");
 	    	
 	    	try {
 		    	if ( !libFolder.exists() ) libFolder.create(IResource.NONE, true, null);
@@ -77,7 +77,7 @@ public class PackageExplorerContributions extends AbstractHandler{
 	    	IJavaProject javaP = JavaCore.create(project);
 	    	if (  javaP != null ){
 	    		InputStream lib = getMiddlewareJarFile();
-	    		addLibrary(javaP, "kmiddle.jar", libFolder, lib);
+	    		//addLibrary(javaP, "kmiddle.jar", libFolder, lib);
 	    	}
 	    	
 	    	
@@ -88,7 +88,7 @@ public class PackageExplorerContributions extends AbstractHandler{
 	    	
 	    	
 			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			page.openEditor(new FileEditorInput(file), "kmiddle.GraphEditor");
+			page.openEditor(new FileEditorInput(file), "CPlugin.GraphEditor");
 			
 		} catch (PartInitException e) {
 			// TODO Auto-generated catch block
@@ -110,7 +110,7 @@ public class PackageExplorerContributions extends AbstractHandler{
 	}
 	
 	private void addDescriptor(IFile file){
-		byte[] bytes = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Kproject></Kproject>".getBytes();
+		byte[] bytes = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CModel></CModel>".getBytes();
 	    InputStream source = new ByteArrayInputStream(bytes);
 	    try{
 	    	file.create(source, IResource.NONE, null);
@@ -147,7 +147,7 @@ public class PackageExplorerContributions extends AbstractHandler{
 	
 	
 	private InputStream getMiddlewareJarFile(){
-		Bundle bundle = Platform.getBundle("kmiddlePlugin");
+		Bundle bundle = Platform.getBundle("CPlugin");
 		URL fileURL = bundle.getEntry("files/kmiddle.jar");
 		
 		try {

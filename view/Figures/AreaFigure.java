@@ -1,4 +1,4 @@
-package kmiddlePlugin.view.Figures;
+package CPlugin.view.Figures;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;

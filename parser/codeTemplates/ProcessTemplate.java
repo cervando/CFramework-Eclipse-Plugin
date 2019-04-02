@@ -1,24 +1,24 @@
-package kmiddlePlugin.parser.codeTemplates;
+package CPlugin.parser.codeTemplates;
 
-public class ActivityTemplate {
+public class ProcessTemplate {
 	public static String javaSourceCode = 
 "package %s;" +
 "\n" +
-"\nimport config.AreaNames;" +
-"\nimport kmiddle2.nodes.activities.Activity;" +
+"\nimport config.Names;" +
+"\nimport CFramework.nodes.processes.Process;" +
 "\n" +
 "\n" +
-"\npublic class %s_%s extends Activity {" +
+"\npublic class %s_%s extends Process {" +
 "\n	public %s_%s(){" +
-"\n		this.ID = AreaNames.%s_%s;" +
-"\n		this.namer = AreaNames.class;" +
+"\n		this.ID = Names.%s_%s;" +
+"\n		this.namer = Names.class;" +
 "\n	}" +
 "\n	" +
 "\n	public void init(){" +
 "\n		" +
 "\n	}" +
 "\n	" +
-"\n	public void receive(int nodeID, byte[] data){" +
+"\n	public void receive(long nodeID, byte[] data){" +
 "\n" +
 "\n	}" +
 "\n}";

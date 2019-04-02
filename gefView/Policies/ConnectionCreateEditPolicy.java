@@ -1,8 +1,8 @@
-package kmiddlePlugin.gefView.Policies;
+package CPlugin.gefView.Policies;
 
-import kmiddlePlugin.gefView.Policies.commands.ConnectionCreateCommand;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Connection;
+import CPlugin.gefView.Policies.commands.ConnectionCreateCommand;
+import CPlugin.model.Area;
+import CPlugin.model.Connection;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;

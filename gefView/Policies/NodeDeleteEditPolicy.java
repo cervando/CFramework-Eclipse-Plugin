@@ -1,8 +1,8 @@
-package kmiddlePlugin.gefView.Policies;
+package CPlugin.gefView.Policies;
 
-import kmiddlePlugin.gefView.Policies.commands.area.NodeDeleteCommand;
-import kmiddlePlugin.model.Area;
-import kmiddlePlugin.model.Graph;
+import CPlugin.gefView.Policies.commands.area.NodeDeleteCommand;
+import CPlugin.model.Area;
+import CPlugin.model.Graph;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
