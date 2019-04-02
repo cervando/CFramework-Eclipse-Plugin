@@ -1,7 +1,5 @@
 package CPlugin.parser;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
@@ -17,12 +15,9 @@ public class InitManager extends Manager {
 		//Creates Init file
 		initFile = config.getFile("Init.java");
 		if ( !initFile.exists()){
-			byte[] code = KMiddleCodeFactory.newInitFile().getBytes();
-			InputStream source = new ByteArrayInputStream(code);
+			
 		    try{
-		    	work = new MyProgressMonitor();
-		    	initFile.create(source, true, work);
-		    	while( !work.isDone() );
+		    	saveFile(initFile, KMiddleCodeFactory.newInitFile());
 			} catch (Exception e) {
 				System.out.println(this.getClass() + ":: Error creating init file");
 				System.out.println(e.toString());
@@ -40,8 +35,8 @@ public class InitManager extends Manager {
 				"String[] areas = \t{ \n\t\t\t\t" + className + ".class.getName(),")
 				&&
 				fileReplaceAll(initFile, 
-						"\\nimport kmiddle2.nodes.service.Igniter;",
-						"\nimport " + pack + "."+ className  +  ";\nimport kmiddle2.nodes.service.Igniter;");
+						"\\nimport cFramework.nodes.service.Igniter;",
+						"\nimport " + pack + "."+ className  +  ";\nimport cFramework.nodes.service.Igniter;");
 	}
 	
 	public boolean setNameArea(String oldAreaName, String newAreaName){

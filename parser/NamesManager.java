@@ -1,17 +1,15 @@
 package CPlugin.parser;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
-public class AreaNamesManager extends Manager {
+public class NamesManager extends Manager {
 
 	private IFile areaNamesFile;
 
-	public AreaNamesManager(IProject project) {
+	public NamesManager(IProject project) {
     	super(project);
     	
 		//Creates AreaNames file

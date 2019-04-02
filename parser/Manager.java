@@ -115,7 +115,6 @@ public class Manager {
 		String word = "";
 		
 		for ( int w = 0; w < words.length; w++ ) {
-			words[w] = words[w].toLowerCase();
 			word += words[w].substring(0, 1).toUpperCase() + words[w].substring(1);
 		}
 		

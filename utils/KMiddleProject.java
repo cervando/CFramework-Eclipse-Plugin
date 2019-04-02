@@ -5,7 +5,7 @@ import org.eclipse.core.resources.IProject;
 import CPlugin.model.Activity;
 import CPlugin.model.Area;
 import CPlugin.model.Graph;
-import CPlugin.parser.AreaNamesManager;
+import CPlugin.parser.NamesManager;
 import CPlugin.parser.DescriptorManager;
 import CPlugin.parser.InitManager;
 import CPlugin.parser.SourceCodeManager;
@@ -20,7 +20,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	
 	//private String projectName;
 	private DescriptorManager descriptorManager;
-	private AreaNamesManager areaNamesManager;
+	private NamesManager areaNamesManager;
 	private InitManager initManager;
 	private SourceCodeManager sourceCodeManager;
 	//String fullPath;
@@ -29,7 +29,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	public KMiddleProject(IProject project){
 		
 		descriptorManager = new DescriptorManager(project);
-		areaNamesManager = new AreaNamesManager(project);
+		areaNamesManager = new NamesManager(project);
 		sourceCodeManager = new SourceCodeManager(project);
 		initManager = new InitManager(project);
 	}
