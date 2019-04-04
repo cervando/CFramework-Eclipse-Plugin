@@ -60,9 +60,8 @@ public class AreaEditPart extends AbstractGraphicalEditPart implements Observer,
 	@Override
 	public void performRequest(Request req) {
 	    if(req.getType() == RequestConstants.REQ_OPEN) {
-	        //System.out.println("requested double-click."); 
-	        //IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			//page.openEditor(getModel(), "kmiddle.GraphEditor");
+	        //System.out.println("double-click on " + getArea().getName() );
+	    	((DiagramEditor)((DefaultEditDomain) getViewer().getEditDomain()).getEditorPart()).openElement(getArea().getName());
 	    }
 	}
 	

@@ -20,10 +20,10 @@ public class NamesManager extends Manager {
 	    		saveFile(areaNamesFile, KMiddleCodeFactory.newNames());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	
-	public boolean addArea(String name) {
+	public boolean addRouter(String name) {
 		try {
 			String className = getClassName(name);
 			fileReplaceAll(areaNamesFile,
@@ -36,7 +36,7 @@ public class NamesManager extends Manager {
 		return false;
 	}
 
-	public boolean deleteArea(String name) {
+	public boolean deleteRouter(String name) {
 		
 		String className = getClassName(name);
 		return fileReplaceAll(areaNamesFile,
@@ -44,7 +44,7 @@ public class NamesManager extends Manager {
 				"");	
 	}
 	
-	public boolean setNameArea(String oldName, String newName) {
+	public boolean setRouterName(String oldName, String newName) {
 		try {
 			String oldClassName = getClassName(oldName);
 			String newClassName = getClassName(newName);
@@ -67,8 +67,8 @@ public class NamesManager extends Manager {
 			String areaClass = getClassName(areaName);
 			String processClass = getClassName(processName);
 			addAfterLine(areaNamesFile,
-					".*public static long " + areaClass + "[_\\s\\t\\/= ].*",
-					"\tpublic static long " + areaClass + "_" + processClass + "\t= IDHelper.generateID(\"" + areaName + "\",\"" + processClass + "\");\n}");
+					".*public static long " + areaClass + "[\\s\\t\\/= ].*",
+					"\tpublic static long " + areaClass + "_" + processClass + "\t= IDHelper.generateID(\"" + areaName + "\",\"" + processClass + "\");");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,11 +76,11 @@ public class NamesManager extends Manager {
 		return false;
 	}
 
-	public boolean setNameActivity(String oldAreaName, String newAreaName,  String cfOldName, String cfNewName) {
+	public boolean setProcessName(String routerName,  String oldProcessName, String newProcessName) {
 		try {
-			fileReplaceAll(areaNamesFile,
-					"public static long " + Pattern.quote(getClassName(oldAreaName) + "_" + getClassName(cfOldName)), 
-					"public static long " + getClassName(newAreaName) + "_" + getClassName(cfNewName));
+			replaceLine(areaNamesFile,
+					".*public static long " + getClassName(routerName) + "_" + getClassName(oldProcessName) + ".*", 
+					"\tpublic static long " + getClassName(routerName) + "_" + getClassName(newProcessName) + "\t= IDHelper.generateID(\"" + routerName + "\",\"" + newProcessName + "\");");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,12 +90,12 @@ public class NamesManager extends Manager {
 
 	/**
 	 * 
-	 * @param areaName
+	 * @param routerName
 	 * @param processName
 	 */
-	public boolean deleteActivity(String areaName, String processName) {
+	public boolean deleteProcess(String routerName, String processName) {
 
-		String areaClass = getClassName(areaName);
+		String areaClass = getClassName(routerName);
 		String processClass = getClassName(processName);
 		return fileReplaceAll(areaNamesFile,
 				".*" + Pattern.quote( areaClass ) + "_" + Pattern.quote( processClass ) + ".*\n",

@@ -69,7 +69,7 @@ public class Manager {
 		return src.getFolder(pack).getFile(cName + ".java");
 	}
 	
-	protected IFile getActivityFile(String areaName, String activityName){
+	protected IFile getProcessFile(String areaName, String activityName){
 		String pack = getPackageName(areaName);
 		String cName = getClassName(areaName) + "_" + getClassName(activityName);
 		try {
@@ -163,7 +163,14 @@ public class Manager {
 		return true;
 	}
 	
-	
+	/***
+	 * 
+	 * @param file File to ve search
+	 * @param lineSearchRegex Regex To find Line
+	 * @param regex	Regex to be remplace in line
+	 * @param replacement replacement
+	 * @return
+	 */
 	protected boolean fileReplaceAll(IFile file,String lineSearchRegex, String regex, String replacement){
 		try {
 			BufferedReader fileInput = new BufferedReader(new InputStreamReader(file.getContents()));
@@ -205,6 +212,30 @@ public class Manager {
 				content.append(line + "\n");
 				if ( line.matches( lineRegex ) )
 					content.append( newLine + "\n");
+			}
+			fileInput.close();
+			saveFile(file, content.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	protected boolean replaceLine(IFile file, String lineRegex, String newLine){
+		try {
+			BufferedReader fileInput = new BufferedReader(new InputStreamReader(file.getContents()));
+			
+			String line;
+			StringBuilder content = new StringBuilder();
+			
+			while ( (line = fileInput.readLine()) != null ) {
+				
+				if ( line.matches( lineRegex ) )
+					content.append( newLine + "\n");
+				else 
+					content.append( line + "\n");
 			}
 			fileInput.close();
 			saveFile(file, content.toString());

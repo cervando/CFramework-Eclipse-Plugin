@@ -23,7 +23,19 @@ import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -53,9 +65,10 @@ import CPlugin.listener.GraphEditorSelectionListener;
 import CPlugin.model.Area;
 import CPlugin.model.Graph;
 import CPlugin.utils.KMiddleProject;
+import CPlugin.view.GraphEditPart;
+import CPlugin.view.factories.AreaFactory;
 import CPlugin.view.factories.ConnectionFactory;
 import CPlugin.view.factories.GraphEditPartFactory;
-import CPlugin.view.factories.AreaFactory;
 
 public class DiagramEditor extends EditorPart {
 
@@ -65,6 +78,20 @@ public class DiagramEditor extends EditorPart {
 	private ConnectionCreationTool createConnection;
 	private boolean dirty = false;
 	private GraphEditorSelectionListener graphEditorListener;
+	private Label Tittle;
+	private ScrollingGraphicalViewer viewer;
+	private int level = 0;
+	private final String[] LEVELS_NAME = new String[]{"Lobe", "Cortex", "Area" };
+	private final int MAX_LEVELS = 3;
+	private GraphEditPart[] graphs = new GraphEditPart[MAX_LEVELS];
+	
+	
+	
+	Button newConnecionButton;
+	Button newModuleButton;
+	Button returnViewButton;
+	
+	
 	
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		IFile original= (input instanceof IFileEditorInput) ? ((IFileEditorInput) input).getFile() : null;
@@ -89,15 +116,128 @@ public class DiagramEditor extends EditorPart {
 	
 	
 	public void createPartControl(Composite parent) {
-		createToolbarActions(parent);
-		ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer();
-		viewer.createControl(parent);
+		
+		//Make Parent a Two Column griid
+		GridLayout f = new GridLayout();
+		f.marginLeft = 0;
+		f.marginTop = 0;
+		parent.setLayout(f);
+		
+		//Grid Data For bottons at top
+		//GridData gridData = new GridData();
+		//gridData.verticalAlignment = GridData.BEGINNING;
+		
+		//Layout for bottons container
+		RowLayout r = new RowLayout();
+		r.wrap = true;
+		r.pack = true;
+		r.justify = false;
+		r.type = SWT.HORIZONTAL;
+		r.marginBottom = 0;
+		r.marginHeight = 0;
+		r.spacing = 0;
+		
+	
+		
+		//Bottons container
+		Composite compositeBar = new Composite(parent, PROP_TITLE);
+		compositeBar.setLayout(r);
+		
+		
+		
+		Tittle = new Label(compositeBar, PROP_TITLE);
+		Tittle.setFont(new Font( Tittle.getDisplay(), new FontData( "Arial", 20, SWT.BOLD ) ));
+		Tittle.setText("Lobe View  ");
+		Tittle.setSize(300, 20);
+		//Tittle.setLayoutData(new GridData().verticalAlignment = GridData.CENTER );
+		//Tittle.setLayoutData( gd );
+		
+		
+		newModuleButton = new Button(compositeBar, PROP_TITLE);
+		newModuleButton.setText("New " + LEVELS_NAME[level]); 
+		//newModuleButton.setSize(20,20);
+		createNode = new CreationTool(new AreaFactory());
+		newModuleButton.addListener(SWT.Selection, new Listener()
+		{
+		    @Override
+		    public void handleEvent(Event event)
+		    {
+		    	editDomain.setActiveTool(createNode);
+		    }
+		});
+		//newModuleButton.setImage(image);
+		
+		
+		newConnecionButton = new Button(compositeBar, PROP_TITLE);
+		newConnecionButton.setText("New Connection");
+		//newConnecionButton.setSize(20,20);
+		createConnection = new ConnectionCreationTool(new ConnectionFactory());
+		newConnecionButton.addListener(SWT.Selection, new Listener()
+		{
+		    @Override
+		    public void handleEvent(Event event)
+		    {
+		    	editDomain.setActiveTool(createConnection);
+		    }
+		});
+		
+		
+		returnViewButton = new Button(compositeBar, PROP_TITLE);
+		returnViewButton.setText("Return to Previos Level");
+		returnViewButton.setVisible(false);
+		returnViewButton.addListener(SWT.Selection, new Listener()
+		{
+		    @Override
+		    public void handleEvent(Event event)
+		    {
+		    	level--;
+		    	//Save actual GRAPH
+		    	
+		    	//Load higher GRAPH
+		    	viewer.setContents(graphs[level]);
+		    	refreshButtons();
+		    }
+		});
+		
+		
+		
+		
+		
+		/*
+		try {
+			newAreaActionTool.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+						getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+			newConnectionActionTool.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+						getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
+		} catch (Exception e) {
+			System.out.println(e);
+		}*/
+		
+		
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
+		
+		Composite compositeViewer = new Composite(parent, PROP_TITLE);
+		compositeViewer.setLayout(new FillLayout());
+		compositeViewer.setBackground(ColorConstants.black);
+		compositeViewer.setLayoutData(gridData);
+		
+		
+		viewer = new ScrollingGraphicalViewer();
+		viewer.createControl(compositeViewer);
 		viewer.setEditPartFactory(new GraphEditPartFactory());
 		viewer.getControl().setBackground(ColorConstants.white);
+		
+		
+		
+		
+		
 		editDomain.addViewer(viewer);
 		getSite().setSelectionProvider(viewer);
 		loadFile(viewer);
-		
 		
 		
 		//viewer.setRootEditPart(new RulerRootEditPart(true));
@@ -115,14 +255,24 @@ public class DiagramEditor extends EditorPart {
 				imgDesc.getImageData()
 		);
 		viewer.getControl().setBackgroundImage(img);
-		imgf = new ImageFigure(img);
+		viewer.getControl().update();
 		 */
 		//GridData gridData = new GridData();
 		//gridData.horizontalAlignment = GridData.FILL;
 		//gridData.horizontalSpan = 7;
 		//viewer.getControl().setLayoutData(gridData);
-		//viewer.getControl().update();
+		//
 				
+	}
+	
+	
+	
+	public void openElement( String name ) {
+		//Save graph
+		graphs[level] = (GraphEditPart) viewer.getContents();
+		level ++ ;
+		viewer.setContents(new Graph());
+		refreshButtons();
 	}
 	
 	
@@ -145,7 +295,15 @@ public class DiagramEditor extends EditorPart {
 	}
 	
 	
-	 
+	private void refreshButtons() {
+
+    	newModuleButton.setText("New " + LEVELS_NAME[level]); 
+    	Tittle.setText(LEVELS_NAME[level] + " View  ");
+    	if (level == 0 )
+    		returnViewButton.setVisible(false);
+    	else
+    		returnViewButton.setVisible(true);
+	}
 	
 	
 	public void createToolbarActions(Composite parent){
@@ -207,7 +365,7 @@ public class DiagramEditor extends EditorPart {
 	}
 	
 	
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter(Class adapter) {
 		 if (adapter == CommandStack.class) {
 			 return editDomain.getCommandStack();

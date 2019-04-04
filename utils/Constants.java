@@ -7,20 +7,20 @@ public class Constants {
 	/*
 	 * Constants of language descriptor
 	 */
-	public static String TagGroup = "Group";
-	public static String TagGroup_name = "name";
+	//public static String TagGroup = "Group";
+	//public static String TagGroup_name = "name";
 	
-	public static String TagArea = "Area";
-	public static String TagArea_name = "name";
-	public static String TagArea_blackBox = "Blackbox";
-	public static String TagArea_X = "X";
-	public static String TagArea_Y = "Y";
-	public static String TagArea_width = "Width";
+	public static String TagModule = "Module";
+	public static String TagModule_name = "name";
+	public static String TagModule_blackBox = "Blackbox";
+	public static String TagModule_X = "X";
+	public static String TagModule_Y = "Y";
+	public static String TagModule_width = "Width";
 	public static String TagArea_height = "Height";
 	
 	public static String TagArea__inputs = "inputs";
 	public static String TagArea__inputs__input 	= "input";
-	public static String TagArea__inputs__input_area 	= "area";
+	public static String TagArea__inputs__input_area 	= "Module";
 	
 	public static String TagProcess = "Process";
 	public static String TagProcess_name = "name";

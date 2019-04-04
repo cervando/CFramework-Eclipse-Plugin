@@ -5,7 +5,7 @@ public class ProcessTemplate {
 "package %s;" +
 "\n" +
 "\nimport config.Names;" +
-"\nimport CFramework.nodes.processes.Process;" +
+"\nimport cFramework.nodes.processes.Process;" +
 "\n" +
 "\n" +
 "\npublic class %s_%s extends Process {" +

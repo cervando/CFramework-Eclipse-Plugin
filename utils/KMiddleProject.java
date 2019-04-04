@@ -55,7 +55,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 		
 		String areaN = areaName;
 		if ( descriptorManager.addArea(groupName, areaN) ){
-			if ( areaNamesManager.addArea(areaN)){
+			if ( areaNamesManager.addRouter(areaN)){
 				if ( initManager.addArea(areaN) ){
 					if ( sourceCodeManager.addArea( areaN) ){
 						return true;
@@ -70,7 +70,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	
 	public boolean setAreaName(String oldAreaName, String newAreaName, boolean isBlackBox){
 		if (  descriptorManager.setAreaName(oldAreaName, newAreaName) ){
-			if ( areaNamesManager.setNameArea(oldAreaName,newAreaName)){
+			if ( areaNamesManager.setRouterName(oldAreaName,newAreaName)){
 				if ( !isBlackBox ) {
 					if ( initManager.setNameArea(oldAreaName,newAreaName) ){
 						if ( sourceCodeManager.setAreaName(oldAreaName, newAreaName)){
@@ -110,7 +110,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	 */
 	public boolean deleteArea(String areaName, boolean isblackBox){
 		if ( descriptorManager.deleteArea(areaName) ){
-			if ( areaNamesManager.deleteArea(areaName)){
+			if ( areaNamesManager.deleteRouter(areaName)){
 				if ( !isblackBox) {
 					if ( initManager.deleteArea(areaName) ){
 						if ( sourceCodeManager.deleteArea(areaName)){
@@ -145,10 +145,10 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	
 	
 	
-	public boolean setActivityName(String aName, String cfOldName, String cfNewName, String lenguage ){
-		if ( descriptorManager.setProcessName(aName, cfOldName, cfNewName) )
-			if ( areaNamesManager.setNameActivity(aName, aName, cfOldName, cfNewName) ) {
-				return sourceCodeManager.setActivityName(aName, cfOldName, cfNewName, lenguage);
+	public boolean setActivityName(String routerName, String oldProcessName, String newProcessName, String lenguage ){
+		if ( descriptorManager.setProcessName(routerName, oldProcessName, newProcessName) )
+			if ( areaNamesManager.setProcessName(routerName, oldProcessName, newProcessName) ) {
+				return sourceCodeManager.setProcessName(routerName, oldProcessName, newProcessName, lenguage);
 			}
 		return false;
 	}
@@ -162,7 +162,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	 */
 	public boolean deleteActivity(String aName, String cfName, String lenguage){
 		if ( descriptorManager.deleteProccess(aName, cfName) ){
-			if ( areaNamesManager.deleteActivity(aName, cfName)){
+			if ( areaNamesManager.deleteProcess(aName, cfName)){
 				return sourceCodeManager.deleteProcess(aName, cfName,lenguage);
 			}
 		}
@@ -215,7 +215,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 		return descriptorManager.setAreaXY(areaName, x, y, width, height);
 	}
 	
-	
+	/*
 	public boolean addGroup(String groupName){
 		return descriptorManager.addGroup(groupName);
 	}
@@ -226,7 +226,7 @@ public class KMiddleProject extends EclipseProjectFileManager {
 	
 	public boolean deleteGroup(String groupName){
 		return descriptorManager.deleteGroup(groupName);
-	}
+	}*/
 	
 	public boolean addConnection(String sourceName, String targetName){
 		return descriptorManager.addConnection(sourceName, targetName);

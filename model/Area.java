@@ -26,6 +26,7 @@ public class Area extends Observable {
 	
 	public void setEditPart(AreaEditPart e){
 		myEditPart = e;
+		
 	}
 	
 //	public IFile getFile(){

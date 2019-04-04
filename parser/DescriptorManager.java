@@ -105,10 +105,10 @@ public class DescriptorManager {
 	 * @return Returns true if sucess, false if not
 	 */
 	public boolean addArea(String groupName, String areaName){
-		Element group;		
+		Element root;		
 		
 		//Gets the groups node, groupName must not be null or ""
-		if ( groupName != null && !groupName.equals("")){
+		/*if ( groupName != null && !groupName.equals("")){
 			
 			group = searchNode(Constants.TagGroup,Constants.TagGroup_name , groupName);
 			//if the group doesnt exist it create it
@@ -123,17 +123,18 @@ public class DescriptorManager {
 		//If the area is not in a group it is added to the root node
 		}else{
 			group = (org.w3c.dom.Element)doc.getFirstChild();
-		}
-		
-		if ( searchNode(Constants.TagArea, Constants.TagArea_name, areaName) != null ){
+		}*/
+	
+		root = (org.w3c.dom.Element)doc.getFirstChild();
+		if ( searchNode(Constants.TagModule, Constants.TagModule_name, areaName) != null ){
 			//System.out.println("ya existe un elemento con ese nombre");
 			return false;
 		}
 		
-		Element e = doc.createElement(Constants.TagArea);
-		e.setAttribute(Constants.TagArea_name, areaName);
+		Element e = doc.createElement(Constants.TagModule);
+		e.setAttribute(Constants.TagModule_name, areaName);
 		e.appendChild(doc.createElement(Constants.TagArea__inputs));
-		group.appendChild(e);
+		root.appendChild(e);
 		saveDoc();
 		return true;
 	}
@@ -146,7 +147,7 @@ public class DescriptorManager {
 	 * @return true if success
 	 */
 	public boolean deleteArea(String areaName){
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, areaName);
 		if ( area != null ){
 			Element inputToMe = null;
 			
@@ -176,7 +177,7 @@ public class DescriptorManager {
 		System.out.println("**************************");
 		System.out.println("DescriptorManager::setAreaName");
 		System.out.println("Old Name: " + oldAreaName + " \n New Name: " + newAreaName);
-		Element Area = searchNode(Constants.TagArea, Constants.TagArea_name, oldAreaName);
+		Element Area = searchNode(Constants.TagModule, Constants.TagModule_name, oldAreaName);
 		if ( Area != null ){
 			Element inputToMe = null;
 			while ( (inputToMe = searchNode(Constants.TagArea__inputs__input, Constants.TagArea__inputs__input_area, oldAreaName)) != null ){
@@ -185,7 +186,7 @@ public class DescriptorManager {
 			}
 			
 			
-			Area.setAttribute(Constants.TagArea_name, newAreaName);			
+			Area.setAttribute(Constants.TagModule_name, newAreaName);			
 			System.out.println("Area Renombrada");
 			saveDoc();
 			return true;
@@ -204,12 +205,12 @@ public class DescriptorManager {
 	
 	public boolean setAreaXY(String areaName, int x, int y, int width, int height ){
 		System.out.println("Modificando XY de Area " + areaName);
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, areaName);
 		if ( area != null ){
 			
-			area.setAttribute(Constants.TagArea_X, String.valueOf(x) );
-			area.setAttribute(Constants.TagArea_Y, String.valueOf(y) );
-			area.setAttribute(Constants.TagArea_width, String.valueOf(width) );
+			area.setAttribute(Constants.TagModule_X, String.valueOf(x) );
+			area.setAttribute(Constants.TagModule_Y, String.valueOf(y) );
+			area.setAttribute(Constants.TagModule_width, String.valueOf(width) );
 			area.setAttribute(Constants.TagArea_height, String.valueOf(height) );
 			
 			System.out.println("Area reubicada");
@@ -227,10 +228,10 @@ public class DescriptorManager {
 	
 	public boolean setAreaBlackBox(String areaName, boolean isBlackBox){
 		System.out.println("Modificando Blackbox de Area " + areaName);
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, areaName);
 		if ( area != null ){
 			
-			area.setAttribute(Constants.TagArea_blackBox, String.valueOf(isBlackBox) );
+			area.setAttribute(Constants.TagModule_blackBox, String.valueOf(isBlackBox) );
 			saveDoc();
 			return true;
 		}else{
@@ -250,7 +251,7 @@ public class DescriptorManager {
 	 * @param groupName
 	 * @return
 	 */
-	public boolean addGroup(String groupName){
+/*	public boolean addGroup(String groupName){
 		System.out.println("Creando grupo: " + groupName);
 		if ( searchNode(Constants.TagGroup,Constants.TagGroup_name , groupName) != null){
 			System.out.println("Grupo ya existente");
@@ -262,7 +263,7 @@ public class DescriptorManager {
 		saveDoc();
 		System.out.println("Grupo agregado: " + groupName);
 		return true;
-	}
+	}*/
 	
 	
 	
@@ -272,7 +273,7 @@ public class DescriptorManager {
 	 * @param groupName
 	 * @return
 	 */
-	public boolean deleteGroup(String groupName){
+	/*public boolean deleteGroup(String groupName){
 		System.out.println("Eliminando area" + groupName);
 		Element group = searchNode(Constants.TagGroup, Constants.TagGroup_name, groupName);
 		if ( group != null ){
@@ -305,7 +306,7 @@ public class DescriptorManager {
 			System.out.println("grupo no existente");
 			return false;
 		}
-	}
+	}*/
 	
 	/*****************************************************************************************************************************
 	 *  	PROCESS SECTION
@@ -319,7 +320,7 @@ public class DescriptorManager {
 	 */
 	public boolean addProcess(String aName, String cfName){
 		System.out.println("Agregando Proceso: " + aName + "_"+ cfName);
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, aName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, aName);
 		if ( area == null )
 			return false;
 		
@@ -458,29 +459,31 @@ public class DescriptorManager {
 	}*/
 	
 	public boolean addConnection(String sourceName,  String areaTarget){
-		Element targetArea = searchNode(Constants.TagArea, Constants.TagArea_name, areaTarget);
+		Element targetArea = searchNode(Constants.TagModule, Constants.TagModule_name, areaTarget);
 		Element inputs = (Element) targetArea.getFirstChild();
 		
 		if ( inputs == null )
 			return false;
 		NodeList inputsChild = inputs.getChildNodes();
 		Element input = null;
+		
+		//It is already added
 		for ( int i = 0; i < inputsChild.getLength(); i++ ){
 			input = (Element) inputsChild.item(i); 
 			if ( input.getAttribute(Constants.TagArea__inputs__input_area).equals(sourceName))
-				return false;
+				return true;
 		}
 		
 		
 		input = doc.createElement(Constants.TagArea__inputs__input);
-		input.setAttribute(Constants.TagArea__inputs__input_area, areaTarget);
+		input.setAttribute(Constants.TagArea__inputs__input_area, sourceName);
 		inputs.appendChild(input);
 		saveDoc();
 		return true;
 	}
 	
 	public boolean deleteConection(String aName, String areaSource){
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, aName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, aName);
 		Element inputs = (Element) area.getFirstChild();
 		
 		if ( inputs == null )
@@ -532,7 +535,7 @@ public class DescriptorManager {
 	private Element searchProcess(String routerName, String processName){
 		
 		
-		Element area = searchNode(Constants.TagArea, Constants.TagArea_name, routerName);
+		Element area = searchNode(Constants.TagModule, Constants.TagModule_name, routerName);
 		if (area == null )
 			return null;
 		
@@ -556,7 +559,7 @@ public class DescriptorManager {
 	public Graph getGraph(){
 		Graph result = new Graph();
 		
-		NodeList nodesTagged = doc.getElementsByTagName(Constants.TagArea);
+		NodeList nodesTagged = doc.getElementsByTagName(Constants.TagModule);
 		Area area;
 		
 		//Add Areas
@@ -573,7 +576,7 @@ public class DescriptorManager {
 			//this is the source area
 			area = areas.get(i);
 			//Get the outputs of this area
-			nodesTagged = searchNode(Constants.TagArea, Constants.TagArea_name, area.getName()).getFirstChild().getChildNodes();
+			nodesTagged = searchNode(Constants.TagModule, Constants.TagModule_name, area.getName()).getFirstChild().getChildNodes();
 			for ( int c = 0; c < nodesTagged.getLength(); c++){
 				Area source = null;
 				String sourceName = ((Element) nodesTagged.item(c)).getAttribute(Constants.TagArea__inputs__input_area);
@@ -601,7 +604,7 @@ public class DescriptorManager {
 	}
 	
 	public Area getArea(String areaName){
-		Element area = (Element)searchNode(Constants.TagArea, Constants.TagArea_name, areaName);
+		Element area = (Element)searchNode(Constants.TagModule, Constants.TagModule_name, areaName);
 		if ( area != null)
 			return getArea(area);
 		return null;
@@ -613,16 +616,16 @@ public class DescriptorManager {
 	
 	private Area getArea(Element elementArea){
 		Area area = new Area();
-		String areaName = elementArea.getAttribute(Constants.TagArea_name);
+		String areaName = elementArea.getAttribute(Constants.TagModule_name);
 		area.setName(areaName);
 		
-		int x = Integer.parseInt(elementArea.getAttribute(Constants.TagArea_X));
-		int y = Integer.parseInt(elementArea.getAttribute(Constants.TagArea_Y));
+		int x = Integer.parseInt(elementArea.getAttribute(Constants.TagModule_X));
+		int y = Integer.parseInt(elementArea.getAttribute(Constants.TagModule_Y));
 		
 		//Set the size of the area
 		int width = 65;
 		int height = 35;
-		String val = elementArea.getAttribute(Constants.TagArea_width);
+		String val = elementArea.getAttribute(Constants.TagModule_width);
 		if (!val.equals(""))
 			width = Integer.parseInt(val);
 		

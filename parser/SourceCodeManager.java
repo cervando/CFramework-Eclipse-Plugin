@@ -147,7 +147,7 @@ public class SourceCodeManager extends Manager{
 	public boolean deleteProcess(String areaName, String activityName, String lenguage) {
 		try {
 			work = new MyProgressMonitor();
-			getActivityFile(areaName, activityName).delete(true, work);
+			getProcessFile(areaName, activityName).delete(true, work);
 			while( !work.isDone() );
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -160,20 +160,20 @@ public class SourceCodeManager extends Manager{
 		return true;		
 	}
 	
-	public boolean setActivityName(String aName, String actOldName, String actNewName, String lenguage){
-		String actOldClassName = getClassName(aName) + "_" + getClassName(actOldName);
-		String actNewClassName = getClassName(aName) + "_" + getClassName(actNewName);	
+	public boolean setProcessName(String routerName, String oldProcessName, String newProcessName, String lenguage){
+		String oldClassName = getClassName(routerName) + "_" + getClassName(oldProcessName);
+		String newClassName = getClassName(routerName) + "_" + getClassName(newProcessName);	
 		IFile file;
 		//Change Activity sourceCode and name
 		try {
-			file = getActivityFile(aName, actOldName);
+			file = getProcessFile(routerName, oldProcessName);
 			if ( file.exists() ){
 				fileReplaceAll(file, 
-						"\\W" + Pattern.quote( getClassName(actOldClassName) ) + "\\W",
-						Pattern.quote( getClassName(actOldClassName) ), 
-						actNewClassName );
+						"\\W" + Pattern.quote( getClassName(oldClassName) ) + "\\W",
+						Pattern.quote( getClassName(oldClassName) ), 
+						newClassName );
 				work = new MyProgressMonitor();
-				file.move( getPackage(aName).getFile(actNewClassName + "." + file.getFileExtension()).getFullPath() , true, work);
+				file.move( getPackage(routerName).getFile(newClassName + "." + file.getFileExtension()).getFullPath() , true, work);
 				while( !work.isDone() );
 			}
 			
@@ -182,11 +182,11 @@ public class SourceCodeManager extends Manager{
 			return false;
 		}
 		
-		file = getAreaFile(aName);
+		file = getAreaFile(routerName);
 		fileReplaceAll(file, 
-							"\\W" + Pattern.quote( actOldClassName ) + "\\W",
-							Pattern.quote( actOldClassName ),
-							actNewClassName );		
+							"\\W" + Pattern.quote( oldClassName ) + "\\W",
+							Pattern.quote( oldClassName ),
+							newClassName );		
 		return true;			
 	}
 	
